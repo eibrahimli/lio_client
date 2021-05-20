@@ -27,6 +27,17 @@ export default {
             let response = await axios.delete(`/project/${data.project_id}/status/${data.status_id}`)
 
             return response.data
+        },
+        async storeProject(_,data) {
+            let response = await axios.post(`/project`, {name: data.name, department: data.department_id})
+            if(response.data.message === 'success') {
+                return response.data.data
+            }
+        },
+        async removeProjectFromApi(_,id) {
+            let response = await axios.delete('/project/'+id)
+
+            return response.data.message
         }
     }
 }

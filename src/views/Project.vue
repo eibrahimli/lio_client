@@ -59,9 +59,14 @@
                     <template v-slot:item="{item}">
                       <drag :key="item.id" :data="item" @cut="removeItem(status.tasks, item)">
                         <v-sheet class="pointer v-sheet--outlined mx-0 my-0">
-                          <div @click.prevent="getTaskDetails(item)" :class="{'text-decoration-line-through': status.name == 'Done'}"
-                               class="px-4 py-3 black--text elevation-2 font-weight-medium subtitle-2">
-                            {{ item.name }}</div>
+                          <v-alert @click.prevent="getTaskDetails(item)" class="ma-0" v-if="item.completed" text dense type="success">Tapşırıq bitdi</v-alert>
+                          <div @click.prevent="getTaskDetails(item)" class="px-4 py-3 black--text elevation-2 font-weight-medium subtitle-2">
+                            <span class="d-block" :class="{'text-decoration-line-through': status.name == 'Done' || item.completed}">{{ item.name }}</span>
+                            <div v-if="item.comments && item.comments.length > 0">
+                              <v-icon small left>mdi-message-reply-text-outline</v-icon>
+                              <span>{{ item.comments.length }}</span>
+                            </div>
+                          </div>
                         </v-sheet>
                       </drag>
                     </template>
@@ -132,11 +137,11 @@
           >
             <v-card>
               <v-card-title>
-                <v-row justify="center">
+                <v-row>
                   <v-col cols="12">
                     <v-sheet height="80" width="100%" class="d-flex flex-row flex-shrink-1">
                       <v-flex shrink="1" grow="0" class="d-flex justify-space-around flex-row align-start">
-                        <v-btn class="flex-shrink-1 mr-5" height="48" color="primary"> Bİtİr</v-btn>
+                        <v-btn :disabled="taskSlot.task.completed === 1 ? 'disabled' : null" class="flex-shrink-1 mr-5" height="48" @click.prevent="taskSlot.task.completed = 1; taskUpdate(taskSlot.task)" color="primary"> Bİtİr</v-btn>
                         <v-spacer></v-spacer>
                         <v-select v-model.trim="assign" @change="assignTaskToEmployee" :items="department.employees" item-value="id" item-text="name" clearable class="flex-grow-0" solo
                                   label="Unasigned"></v-select>
@@ -165,6 +170,10 @@
                         </v-menu>
                       </v-flex>
                     </v-sheet>
+                  </v-col>
+
+                  <v-col v-if="taskSlot.task.completed" cols="12">
+                    <v-alert text type="success">Bu tapşırıq bitirildi</v-alert>
                   </v-col>
 
                 </v-row>

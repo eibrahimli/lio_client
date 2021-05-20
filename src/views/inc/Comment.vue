@@ -14,7 +14,7 @@ export default {
   }),
 
   mounted() {
-    if(this.task.deadline !== null) {
+    if(this.task.deadline != null) {
       this.task.deadline = this.task.deadline.split('-').reverse().join('-')
     }
   }

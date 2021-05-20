@@ -123,7 +123,6 @@ export default {
     currentProject() {
       let data = []
       if(this.$route.params.id && this.department) {
-        console.log(this.$route.query)
         data = this.department.projects.filter(project => project.id === this.$route.params.id)
       }
 

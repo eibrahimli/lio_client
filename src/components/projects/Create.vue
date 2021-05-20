@@ -18,8 +18,13 @@
                   cols="12"
               >
                 <v-text-field
+                    autofocus
+                    :error-messages="nameErrors"
                     label="Proyekt Adı"
-                    required
+                    v-model.trim="name"
+                    @input="$v.name.$touch()"
+                    @blur="$v.name.$touch()"
+                    @keyup.enter="submit"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -37,7 +42,7 @@
           <v-btn
               small
               color="primary"
-              @click="dialog = false"
+              @click="submit"
           >
             Əlavə Et
           </v-btn>
@@ -49,11 +54,53 @@
 </template>
 
 <script>
+import {validationMixin} from "vuelidate";
+import {minLength, required} from "vuelidate/lib/validators";
+import {mapActions} from "vuex";
+
 export default {
   name: "Create",
+  props: ['department_id','type'],
   data: () => ({
     dialog: false,
+    name: '',
   }),
+  validations: {
+    name: {required, minLength: minLength(3)}
+  },
+  mixins: [validationMixin],
+  computed: {
+    nameErrors() {
+      const errors = []
+      if(!this.$v.name.$dirty) return errors
+      !this.$v.name.required && errors.push('Proyekt adını daxil etmək vacibdir')
+      !this.$v.name.minLength && errors.push(`Proyekt adı minimum ${this.$v.name.$params.minLength.min} simvol olmalıdır`)
+
+      return errors
+    }
+  },
+  methods: {
+    ...mapActions(["storeProject"]),
+    submit() {
+      this.$v.$touch()
+
+      if(!this.$v.$invalid) {
+        let posted_data = { name: this.name, department_id: this.department_id}
+
+        this.storeProject(posted_data).then(data => {
+          this.$emit('new_project',data)
+          this.dialog = false
+          this.name = ''
+          this.$v.$reset()
+        })
+      }
+    }
+  },
+
+  mounted() {
+    this.$v.$reset()
+  }
+
 }
 </script>
 

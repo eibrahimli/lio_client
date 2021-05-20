@@ -1,5 +1,7 @@
-# lio-app
-
+# Lio Task Manager For Client
+    This app is created by Elvir Ibrahimli for Lio Task Manager
+    Installation guide is distributed below
+    
 ## Project setup
 ```
 npm install
