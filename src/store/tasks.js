@@ -64,7 +64,7 @@ export default {
             let response = await axios.patch(`/task/${task.id}`,{completed: task.completed, name: task.name, text: task.text, deadline: task.deadline  })
 
             if(response.data.message === 'success') {
-                return true
+                return response.data.data
             }
         }
     },

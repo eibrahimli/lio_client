@@ -5,7 +5,14 @@
         max-width="530px"
     >
       <template v-slot:activator="{on,attrs}">
-        <v-btn rounded class="primary" v-on="on" v-bind="attrs" small><v-icon>mdi-plus</v-icon></v-btn>
+        <div v-on="on" v-bind="attrs" style="width: 90%">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Yeni Proyekt</v-list-item-title>
+          </v-list-item>
+        </div>
       </template>
       <v-card>
         <v-card-title>
@@ -48,6 +55,13 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+      <v-snackbar
+          :timeout="2000"
+          absolute
+          color="success"
+          elevation="24"
+          top
+      >{{ text }}</v-snackbar>
     </v-dialog>
   </v-row>
 
@@ -56,20 +70,22 @@
 <script>
 import {validationMixin} from "vuelidate";
 import {minLength, required} from "vuelidate/lib/validators";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "Create",
-  props: ['department_id','type'],
+  props: ['type'],
   data: () => ({
     dialog: false,
     name: '',
+    text: ''
   }),
   validations: {
     name: {required, minLength: minLength(3)}
   },
   mixins: [validationMixin],
   computed: {
+    ...mapGetters({'deparment' : 'auth/department'}),
     nameErrors() {
       const errors = []
       if(!this.$v.name.$dirty) return errors
@@ -85,7 +101,7 @@ export default {
       this.$v.$touch()
 
       if(!this.$v.$invalid) {
-        let posted_data = { name: this.name, department_id: this.department_id}
+        let posted_data = { name: this.name, department_id: this.deparment.id}
 
         this.storeProject(posted_data).then(data => {
           this.$emit('new_project',data)
@@ -99,6 +115,7 @@ export default {
 
   mounted() {
     this.$v.$reset()
+
   }
 
 }

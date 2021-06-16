@@ -127,7 +127,7 @@
             </v-card>
           </v-col>
         </v-row>
-    <Comment :task="task" v-if="dialog && task != null">
+    <Comment :task="task" :is_completed='is_completed' v-if="dialog && task != null">
       <template v-slot:default="taskSlot">
         <v-row>
           <v-dialog
@@ -172,7 +172,7 @@
                     </v-sheet>
                   </v-col>
 
-                  <v-col v-if="taskSlot.task.completed" cols="12">
+                  <v-col v-show="taskSlot.task.completed === 1" cols="12">
                     <v-alert text type="success">Bu tapşırıq bitirildi</v-alert>
                   </v-col>
 
@@ -299,6 +299,7 @@ export default {
   name: "Project",
   data: () => ({
     statuses_ids: [],
+    is_completed: 0,
     colors: ['rgb(217, 54, 81)','rgb(255, 159, 26)','rgb(255, 213, 0)','rgb(138, 204, 71)','rgb(71, 204, 138)',
       'rgb(48, 191, 191)','rgb(0, 170, 255)','rgb(143, 126, 230)','rgb(152, 170, 179)'
     ],
@@ -481,7 +482,11 @@ export default {
     },
 
     taskUpdate(task) {
-      this.updateTask(task)
+      
+      this.updateTask(task).then((data) => {
+        this.is_completed = data.completed
+        this.task = data
+      })
     },
 
     generator: function () {

@@ -1,5 +1,5 @@
  <template>
-  <v-app-bar app color="#FFF" flat>
+  <v-app-bar style="background: transparent" app color="#FFF" flat>
     <v-container class="py-0 justify-center fill-height">
       <router-link :to="{ name: 'Login' }">
         <v-img

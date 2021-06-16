@@ -42,6 +42,7 @@
                 @input="$v.password.$touch()"
                 @blur="$v.password.$touch()"
                 @click:append="show1 = !show1"
+                @keypress.enter="submit"
               ></v-text-field>
           
             <v-checkbox

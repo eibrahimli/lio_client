@@ -41,12 +41,13 @@ a {
   text-decoration: none;
 }
 body {
+
   height: 100vh;
   width: 100vw;
 }
 #inspire{
-  background: url("../public/bg2.jpg") no-repeat center center fixed !important;
-  background-size: cover;
+  background: url("../public/bg3.jpg") no-repeat center center fixed !important;
+  background-size: contain;
   height: 100vh;
 }
 </style>
