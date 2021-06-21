@@ -1,6 +1,6 @@
 <template>
   <div class="mx-0 px-0">
-    <v-row>
+    <v-row class="overflow-x-visible" style="width: 100%">
       <v-col class="px-0" style="position: relative;" sm="6" md="3" xs="12" lg="2" cols="12"
              v-for="(status,index) in project.statuses" :key="status.id">
         <v-card class="rounded-0" height="100vh">

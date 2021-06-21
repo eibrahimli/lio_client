@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col cols="6">
+      <v-col md="6" cols="12" lg="6" sm="6">
         <v-sheet height="64">
           <v-toolbar
               flat
@@ -57,7 +57,7 @@
         </v-sheet>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="6">
+      <v-col md="6" cols="12" lg="6" sm="6">
         <v-card
             max-width="100%"
             class="mx-auto"
@@ -116,12 +116,14 @@
         </v-card>
       </v-col>
 
-      <div class="greeting">
-        <h1 class="white--text font-weight-bold">Hər vaxtınız xeyir, {{ user.name }}</h1>
-        <span class="display-1 white--text font-weight-bold">{{ date }}</span>
-        <p>“If you fight you might lose, if you don’t you have already lost.”</p>
-        <div class="kr-text" style="font-size: 15px; font-weight: 500; line-height: 22px; letter-spacing: normal; margin-top: 10px; color: white;">Bertolt Brecht</div>
-      </div>
+      <v-col cols="12">
+        <div class="greeting">
+          <h1 class="white--text font-weight-bold">Hər vaxtınız xeyir, {{ user.name }}</h1>
+          <span class="display-1 white--text font-weight-bold">{{ date }}</span>
+          <p>“If you fight you might lose, if you don’t you have already lost.”</p>
+          <div class="kr-text" style="font-size: 15px; font-weight: 500; line-height: 22px; letter-spacing: normal; margin-top: 10px; color: white;">Bertolt Brecht</div>
+        </div>
+      </v-col>
 
 <!--      <v-bottom-navigation dark app>-->
 <!--        <p class="body-1 text-center mt-4">&copy; AG Developments Team | Elvir İbrahimli and Elvin Mammedov</p>-->
