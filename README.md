@@ -1,6 +1,6 @@
 # Lio Task Manager For Client
     This app is created by Elvir Ibrahimli for Lio Task Manager
-    Installation guide is distributed below
+    Installation guide is distributed at below
     
 ## Project setup
 ```
