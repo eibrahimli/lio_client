@@ -14,7 +14,10 @@ export default {
   }),
 
   mounted() {
-    this.task.completed = this.is_completed
+
+    if(!this.task.completed) {
+      this.task.completed = this.is_completed
+    }
     if(this.task.deadline != null) {
       this.task.deadline = this.task.deadline.split('-').reverse().join('-')
     }

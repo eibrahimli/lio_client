@@ -66,6 +66,13 @@ export default {
             if(response.data.message === 'success') {
                 return response.data.data
             }
+        },
+        async filterAssignedTasks(_,field) {
+            let response = await axios.get('/task/filter/'+field)
+
+            if(response.data.message === 'success') {
+                return response.data.data
+            }
         }
     },
     mutations: {

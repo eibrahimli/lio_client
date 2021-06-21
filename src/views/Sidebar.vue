@@ -12,12 +12,14 @@
           app
           class="transparent"
       >
-        <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title class="white--text"><router-link :to="{name: 'dashboard'}" class="white--text">Lio</router-link></v-toolbar-title>
+        <v-toolbar-title class="white--text">
+          <router-link :to="{name: 'dashboard'}" class="white--text">Kob Lio</router-link>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-list rounded dense nav dark flat>
-          <v-list-item class="rounded" @click.prevent="logOut">
+        <v-list class="py-0 text-center" rounded dense nav dark height="2.5rem" flat>
+          <v-list-item link class="rounded py-0" @click.prevent="logOut">
             <v-list-item-icon class="mr-2">
               <v-icon>mdi-account-minus</v-icon>
             </v-list-item-icon>
@@ -32,9 +34,9 @@
       <v-navigation-drawer
           app
           dark
-          mini-variant.sync
           v-model="drawer"
-          style="background: black !important; opacity: .6"
+          class="transparent"
+          style="background-color: #011627 !important;"
       >
         <v-list
             nav
@@ -44,12 +46,12 @@
               v-model="group"
               active-class="white--text text--accent-4"
           >
-            <v-list-item :to="{name: 'dashboard'}" >
+            <v-list-item :to="{name: 'dashboard'}">
               <v-list-item-icon>
                 <v-icon>mdi-home</v-icon>
               </v-list-item-icon>
               <v-list-item-title>
-                <router-link class="white--text font-weight-black" :to="{name: 'dashboard'}">Anasəhifə</router-link>
+                <router-link class="white--text" :to="{name: 'dashboard'}">Anasəhifə</router-link>
               </v-list-item-title>
             </v-list-item>
 
@@ -62,18 +64,23 @@
         </v-list>
         <v-list class="mt-7">
 
-          <v-list-group
-              prepend-icon="mdi-group"
-          >
+          <v-list-group>
             <template v-slot:activator>
+              <v-list-item-icon>
+                <v-icon small>mdi-group</v-icon>
+              </v-list-item-icon>
               <v-list-item-title>Proyektlər</v-list-item-title>
             </template>
 
-              <v-list-item active-class="white--text" :to="{ name: 'project', 'params' : {id: proj.id} }" link class="text-center" v-for="proj in projects" :key="proj.id">
-                <v-list-item-title v-text="proj.name">
-                </v-list-item-title>
-              </v-list-item>
-            </v-list-group>
+            <v-list-item active-class="white--text" :to="{ name: 'project', 'params' : {id: proj.id} }" link
+                         class="text-center" v-for="proj in projects" :key="proj.id">
+              <v-list-item-title v-text="proj.name">
+              </v-list-item-title>
+              <v-list-item-icon>
+                <v-icon small @click.prevent.stop="deleteProject(proj.id)">mdi-delete</v-icon>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list-group>
         </v-list>
 
       </v-navigation-drawer>
@@ -91,6 +98,7 @@ import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
 import Create from "@/components/projects/Create";
+
 export default {
   name: "Sidebar",
   data() {
@@ -109,7 +117,7 @@ export default {
     Loading, Create
   },
   methods: {
-    ...mapActions({'signOut': 'auth/signOut'}),
+    ...mapActions({'signOut': 'auth/signOut','removeProjectFromApi': 'removeProjectFromApi'}),
     addProject(data) {
       this.projects.unshift(data)
       this.snackbar = true
@@ -123,20 +131,39 @@ export default {
           setTimeout(() => {
             this.isLoading = false
             this.$router.replace({'name': 'Login'})
-          },1000)
+          }, 1000)
         })
       } catch (e) {
         console.log(e)
       }
+    },
+    deleteProject(id) {
+      this.removeProjectFromApi(id).then(mes => {
+        if (mes === 'success') {
+          this.projects.map((pr, index) => {
+            if (pr.id === id) {
+              this.snackbar = true
+              this.text = 'Proyekt uğurla silindi'
+              this.$delete(this.projects, index)
+            }
+          })
+        }
+      }).catch(e => {
+        console.log(e)
+      })
     }
   },
 
   computed: {
-    ...mapGetters({'department' : 'auth/department','authenticated': 'auth/authenticated','projects': 'auth/projects'}),
+    ...mapGetters({
+      'department': 'auth/department',
+      'authenticated': 'auth/authenticated',
+      'projects': 'auth/projects'
+    }),
 
     currentProject() {
       let data = []
-      if(this.$route.params.id && this.department) {
+      if (this.$route.params.id && this.department) {
         data = this.department.projects.filter(project => project.id === this.$route.params.id)
       }
 
@@ -148,7 +175,7 @@ export default {
 </script>
 
 <style scoped>
-  a{
-    color: black !important;
-  }
+a {
+  color: black !important;
+}
 </style>
