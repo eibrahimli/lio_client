@@ -141,7 +141,7 @@
         </div>
       </v-col>
     </v-row>
-    <Comment :task="task" :is_completed='is_completed' v-if="dialog && task != null">
+    <Comment @component_unmounted="is_completed = $event" :task="task" :is_completed='is_completed' v-if="dialog && task != null">
       <template v-slot:default="taskSlot">
         <v-row>
           <v-dialog
@@ -467,8 +467,6 @@ export default {
     getTaskDetails(task) {
       this.dialog = true
       this.task = task
-
-      console.log(task)
 
       this.getCommentsFromApi(task.id).then(() => {
         this.assign = this.department.employees.filter(emp => {

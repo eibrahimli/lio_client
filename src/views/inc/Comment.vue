@@ -21,6 +21,9 @@ export default {
     if(this.task.deadline != null) {
       this.task.deadline = this.task.deadline.split('-').reverse().join('-')
     }
+  },
+  destroyed() {
+    this.$emit('component_unmounted', 0)
   }
 
 }

@@ -81,6 +81,7 @@
                     v-on="on"
                 >
                   <v-icon>mdi-filter</v-icon>
+                  <v-icon class="ml-n2" x-small>mdi-arrow-down-drop-circle</v-icon>
                 </v-btn>
               </template>
 
