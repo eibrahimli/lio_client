@@ -18,7 +18,11 @@ export default {
             }
         },
         async updateStatus(_,data) {
-            let response = await axios.patch(`/status/${data.id}`,{name: data.name,project_id: data.project_id})
+            let response = await axios.patch(`/status/${data.id}`,{
+                name: data.name,
+                project_id: data.project_id,
+                color: data.color
+            })
 
             if(response.data.message === 'success') {
                 return response.data

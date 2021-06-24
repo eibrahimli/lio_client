@@ -230,8 +230,9 @@ export default {
     },
 
     fullDate() {
-      let h = new Date().getHours()
-      let m = new Date().getMinutes()
+      let date = new Date()
+      let h = date.getHours()
+      let m = date.getMinutes()
 
       if(h > 12 || h===12 && m > 0){
         if(m >=0 && m < 10) {

@@ -1,11 +1,11 @@
 <template>
   <div class="mx-0 px-0">
-    <v-row class="overflow-x-visible" style="width: 100%">
+    <v-row style="width: 100%;overflow-x:auto; white-space: nowrap;" >
       <v-col class="px-0" style="position: relative;" sm="6" md="3" xs="12" lg="2" cols="12"
              v-for="(status,index) in project.statuses" :key="status.id">
         <v-card class="rounded-0" height="100vh">
           <v-card-title @mouseenter="currentStatus = status" @mouseleave="currentStatus = null" style="height: 6vh"
-                        class="align-content-center white--text" :style="generator()">
+                        class="align-content-center white--text" :style="status.color ? `background-color: `+status.color : `background-color: `+takeRandomColor">
             <v-col cols="12" class="d-flex align-center justify-space-between flex-row">
               <div @dblclick.stop.self="editStatus(status)" v-show="statuses_ids.includes(status.id)"
                    class="text-no-wrap text-truncate headline" :title="status.name">{{ status.name }}
@@ -412,7 +412,7 @@ export default {
     // Take random color for statuses
 
     takeRandomColor() {
-      return Math.random() * this.colors.length
+      return Math.floor(Math.random() * this.colors.length)
     },
 
     editStatus(status) {
@@ -593,6 +593,8 @@ export default {
           this.section_name = ''
           return false
         }
+
+      console.log(this.colors[this.takeRandomColor()])
 
         let vm = this
         this.addSection = true
